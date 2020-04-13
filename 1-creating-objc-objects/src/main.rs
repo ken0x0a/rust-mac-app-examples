@@ -5,22 +5,21 @@
 extern crate objc;
 extern crate libc;
 
-use std::{str,slice};
-use objc::runtime::{Object, Class};
-
+use objc::runtime::{Class, Object};
+use std::{slice, str};
 
 const UTF8_ENCODING: libc::c_uint = 4;
 
 // Link the frameworks used, otherwise classes won't be loaded
 #[link(name = "Foundation", kind = "framework")]
-extern {}
+extern "C" {}
 
 fn main() {
     unsafe {
         let cls = Class::get("NSNumber").unwrap();
         let obj: *mut Object = msg_send![cls, numberWithInteger:34];
         describe(obj);
-        msg_send![obj, release];
+        msg_send![obj, release]
     }
 }
 
@@ -35,7 +34,7 @@ unsafe fn describe(obj: *mut Object) {
 /// Convert an NSString to a String
 fn to_s<'a>(nsstring_obj: *mut Object) -> Option<&'a str> {
     let bytes = unsafe {
-        let length = msg_send![nsstring_obj, lengthOfBytesUsingEncoding:UTF8_ENCODING];
+        let length = msg_send![nsstring_obj, lengthOfBytesUsingEncoding: UTF8_ENCODING];
         let utf8_str: *const u8 = msg_send![nsstring_obj, UTF8String];
         slice::from_raw_parts(utf8_str, length)
     };
