@@ -1,0 +1,9 @@
+[workspace]
+members = [
+  "./1-creating-objc-objects",
+  "./2-displaying-cocoa-window",
+  "./3-packaging-a-mac-app",
+  "./4-wrapping-cocoa-apis",
+  "./5-declaring-new-objc-class",
+  "./6-create-rust-lib-in-cocoa-app",
+]
